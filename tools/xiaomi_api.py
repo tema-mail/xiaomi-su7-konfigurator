@@ -27,7 +27,7 @@ VER = [('选配赛道专业套装', 'Track Package'), ('纽北限量版', 'Nürb
 MASKS = {
  'xiaomi-su7': {'rear': [(2137, 1378, 2216, 1414)], 'rear34': [(3194, 1443, 3235, 1469)]},
  'xiaomi-yu7': {'rear': [(2100, 1479, 2168, 1513)], 'rear34': [(2858, 1479, 2914, 1505)]},
- 'xiaomi-su7-ultra': {},
+ 'xiaomi-su7-ultra': {'rear': [(2141, 1331, 2217, 1365)], 'rear34': [(2919, 1373, 2977, 1404)]},
 }
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
 OUT_W, OUT_H = 1600, 1000
@@ -125,7 +125,7 @@ def sobrat(proj, car, short, slug):
                 options.setdefault(pc, {'name': nm, 'note': note, 'icon': icon, 'mutex': [], 'cascade': [], 'sku': role})
                 ops.append({'id': pc, 'def': bool(i.get('defaultSelect')) or dflt.get(i.get('itemIdentifier')) in ([i['ssuId']] + (i.get('_all') or [])), 'promo': False, 'promoTo': ''})
                 if role == 'int':
-                    mv = {x.get('viewIdentityEnum'): x['payload'] for x in (ins.get(f'PC_INSIDE_CAR_CONFIG_OUTCOME_CROPPING:{i["ssuId"]}') or {}).get('materialValueList') or []}
+                    mv = {x.get('viewIdentityEnum'): x['payload'] for x in (ins.get(f'PC_INSIDE_CAR_CONFIG_OUTCOME_CROPPING:{i["ssuId"]}') or {}).get('materialValueList') or [] if x.get('width', 0) > 1}   # 1×1 – заглушка
                     a, b = mv.get('2d_frontRow_DRIVER') or mv.get('2d_frontRow_PAX'), mv.get('2d_backRow_CNTR')
                     if a:
                         code = pre + pc; ints.append(code); intjobs[f'{proj}/{IMG}/int/{code}--int.webp'] = a
